@@ -8,10 +8,11 @@ import {
   Checkbox,
   TextField,
   Button,
+  TextareaAutosize,
 } from "@mui/material";
 import { Formik } from "formik";
 import * as Yup from "yup";
-
+import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 const RegistrationForm = () => {
   const handleCancel = (resetForm) => {
     resetForm(); // Reset the form values
@@ -23,9 +24,11 @@ const RegistrationForm = () => {
   };
 
   const schema = Yup.object().shape({
-    email: Yup.string().email("Invalid email").required("Email is required"),
-    firstName: Yup.string().required("First Name is required"),
-    lastName: Yup.string().required("Last Name is required"),
+    email: Yup.string()
+      .email("Invalid email")
+      .required("Email is required"),
+    FullName: Yup.string().required("First Name is required"),
+    Address: Yup.string().required("Last Name is required"),
     createPassword: Yup.string()
       .matches(
         /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@$!%*?&])[A-Za-z0-9\d@$!%*?&]{8,}$/,
@@ -35,6 +38,10 @@ const RegistrationForm = () => {
     contactNumber: Yup.string()
       .matches(/^[0-9]{10}$/, "contact number must be a 10 digits")
       .required(" Contact number is required"),
+  });
+
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
 
   return (
@@ -63,8 +70,8 @@ const RegistrationForm = () => {
 
         <Formik
           initialValues={{
-            firstName: "",
-            lastName: "",
+            FullName: "",
+            Address: "",
             email: "",
             createPassword: "",
             contactNumber: "",
@@ -94,28 +101,32 @@ const RegistrationForm = () => {
                 required
                 type="text"
                 fullWidth
-                label="First Name"
+                label="Full Name"
                 variant="standard"
-                name="firstName"
+                name="FullName"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.firstName}
-                error={touched.firstName && !!errors.firstName}
-                helperText={touched.firstName && errors.firstName}
+                value={values.FullName}
+                error={touched.FullName && !!errors.FullName}
+                helperText={touched.FullName && errors.FullName}
               />
               <TextField
                 required
                 type="text"
                 fullWidth
-                label="Last Name"
+                id="filled-multiline-flexible"
+                label="Address"
+                multiline
+                maxRows={4}
                 variant="standard"
-                name="lastName"
+                name="Address"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.lastName}
-                error={touched.lastName && !!errors.lastName}
-                helperText={touched.lastName && errors.lastName}
+                value={values.Address}
+                error={touched.Address && !!errors.Address}
+                helperText={touched.Address && errors.Address}
               />
+
               <TextField
                 required
                 fullWidth
