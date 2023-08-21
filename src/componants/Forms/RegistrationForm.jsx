@@ -1,6 +1,5 @@
 import React from "react";
 import { useState } from "react";
-import axios from "axios";
 import {
   Paper,
   Grid,
@@ -80,15 +79,10 @@ const RegistrationForm = () => {
           }}
           validationSchema={schema}
           onSubmit={(values, { setSubmitting }) => {
-            axios.post("/sign-up", values)
-              .then(response => {
-                console.log("Registration successful");
-                setSubmitting(false);
-              })
-              .catch(error => {
-                console.error("Registration failed", error);
-                setSubmitting(false);
-              });
+            setTimeout(() => {
+              console.log(JSON.stringify(values, null, 2));
+              setSubmitting(false);
+            }, 400);
           }}
         >
           {({
