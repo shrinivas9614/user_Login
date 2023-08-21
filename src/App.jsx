@@ -1,3 +1,4 @@
+import React from "react";
 import { DashBoard, LogIn, Signup } from "./componants/utils";
 import "./styles.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
